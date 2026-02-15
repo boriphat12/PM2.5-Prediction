@@ -24,7 +24,7 @@ Air pollution (PM2.5) is a critical health issue in Bangkok. This project aims t
 ├── .env                    # API Keys (Create this file yourself)
 └── README.md               # Project documentation
 ## Methodology
-
+```
 ### 1. Data Collection (`main.py`)
 
 Fetches historical data from **Jan 2023 to Present**:
