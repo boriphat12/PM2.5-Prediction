@@ -1,4 +1,3 @@
-```markdown
 # 🌫️ PM2.5 Air Quality Forecasting: Bangkok
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
@@ -24,10 +23,7 @@ Air pollution (PM2.5) is a critical health issue in Bangkok. This project aims t
 ├── pm25_prediction.ipynb   # Main notebook: Cleaning, Feature Engineering, Modeling (XGBoost)
 ├── .env                    # API Keys (Create this file yourself)
 └── README.md               # Project documentation
-
-```
-
-## 🛠️ Methodology
+## Methodology
 
 ### 1. Data Collection (`main.py`)
 
@@ -45,8 +41,8 @@ Fetches historical data from **Jan 2023 to Present**:
 
 Strictly using **PAST** data to predict the **FUTURE** to prevent data leakage:
 
-* **❌ Excluded:** Current-timestamp variables (e.g., Current PM10, Temp) were removed to avoid look-ahead bias.
-* **✅ Included:**
+* **Excluded:** Current-timestamp variables (e.g., Current PM10, Temp) were removed to avoid look-ahead bias.
+* **Included:**
 * **Lags:** PM2.5 at `t-1` (1 hr ago), `t-2`, and `t-24` (Yesterday).
 * **Time:** Hour of Day, Day of Week, Month.
 * **Rolling Stats:** 3-hour and 24-hour rolling means (shifted by 1 hour).
@@ -59,7 +55,7 @@ Strictly using **PAST** data to predict the **FUTURE** to prevent data leakage:
 * **Tuning:** Hyperparameters were optimized using **Optuna** (50 trials).
 * **Split:** Strictly time-based splitting (Train: 2023-2024, Test: 2025-Present).
 
-## 📊 Results
+## Results
 
 The model was evaluated on unseen data from 2025.
 
@@ -72,11 +68,11 @@ The model was evaluated on unseen data from 2025.
 **Key Drivers:**
 The analysis confirms that **Recent History (Lag-1)** and **Time of Day** are the most critical predictors, validating the forecasting logic.
 
-## 🚀 How to Run
+## How to Run
 
 1. **Clone the repository**
 ```bash
-git clone [https://github.com/yourusername/pm25-forecasting.git](https://github.com/yourusername/pm25-forecasting.git)
+git clone [https://github.com/boriphat12/PM2.5-Forecasting.git](https://github.com/boriphat12/PM2.5-Forecasting.git)
 
 ```
 
