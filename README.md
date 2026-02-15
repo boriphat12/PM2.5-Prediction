@@ -1,4 +1,3 @@
-
 ```markdown
 # 🌫️ PM2.5 Air Quality Forecasting: Bangkok
 
@@ -39,37 +38,39 @@ Fetches historical data from **Jan 2023 to Present**:
 
 ### 2. Data Cleaning
 
-* **Sensor Errors:** Zeros in `PM2.5`, `PM10` are treated as errors and imputed.
-* **Valid Zeros:** Zeros in `Ozone` and `NO` are retained (natural chemical reaction at night).
+* **Sensor Errors:** Zeros in `PM2.5`, `PM10` are treated as errors and imputed using Linear Interpolation.
+* **Valid Zeros:** Zeros in `Ozone` and `NO` are retained, as they reflect real nocturnal photochemical reactions (Titration effect).
 
-### 3. Feature Engineering (Anti-Leakage) 🚀
+### 3. Feature Engineering (Anti-Leakage Strategy) 🚀
 
-Strictly using **PAST** data to predict the **FUTURE**:
+Strictly using **PAST** data to predict the **FUTURE** to prevent data leakage:
 
-* **❌ Excluded:** Current-timestamp variables (e.g., Current PM10, Temp) to prevent looking ahead.
+* **❌ Excluded:** Current-timestamp variables (e.g., Current PM10, Temp) were removed to avoid look-ahead bias.
 * **✅ Included:**
-* **Lags:** PM2.5 at `t-1` (1 hr ago), `t-2`, and `t-24`.
-* **Time:** Hour of Day, Day of Week.
-* **Rolling Stats:** 3-hour mean (shifted by 1 hour).
+* **Lags:** PM2.5 at `t-1` (1 hr ago), `t-2`, and `t-24` (Yesterday).
+* **Time:** Hour of Day, Day of Week, Month.
+* **Rolling Stats:** 3-hour and 24-hour rolling means (shifted by 1 hour).
 
 
 
 ### 4. Model Optimization
 
-* **Model:** XGBoost Regressor
-* **Tuning:** Hyperparameters optimized using **Optuna** (50 trials).
-* **Split:** Train (2023-2024) | Test (2025-Present).
+* **Algorithm:** XGBoost Regressor
+* **Tuning:** Hyperparameters were optimized using **Optuna** (50 trials).
+* **Split:** Strictly time-based splitting (Train: 2023-2024, Test: 2025-Present).
 
 ## 📊 Results
 
-Evaluated on unseen data from 2025:
+The model was evaluated on unseen data from 2025.
 
 | Metric | Score | Interpretation |
 | --- | --- | --- |
-| **R²** | **0.9600** | The model explains 96% of the variance. |
+| **R²** | **0.9600** | The model explains 96% of the variance in PM2.5 levels. |
 | **RMSE** | **16.29** | Root Mean Squared Error. |
+| **MAE** | **10.51** | Average prediction error is +/- 10.51 µg/m³. |
 
-**Key Driver:** The model relies heavily on **Recent History (Lag-1)** and **Time of Day**, confirming valid forecasting logic.
+**Key Drivers:**
+The analysis confirms that **Recent History (Lag-1)** and **Time of Day** are the most critical predictors, validating the forecasting logic.
 
 ## 🚀 How to Run
 
@@ -88,7 +89,7 @@ pip install pandas numpy xgboost scikit-learn optuna matplotlib seaborn python-d
 
 
 3. **Setup API Key**
-Create a file named `.env` in the same folder and add your key:
+Create a file named `.env` in the project root and add your API key:
 ```env
 API_TOKEN=your_openweathermap_api_key
 
@@ -96,13 +97,9 @@ API_TOKEN=your_openweathermap_api_key
 
 
 4. **Run the Project**
-* First, run `main.py` to fetch the latest data.
-* Then, open `pm25_prediction.ipynb` to train and evaluate the model.
+* **Step 1:** Run `main.py` to fetch the latest data (updates `pm25_bkk.csv`).
+* **Step 2:** Open `pm25_prediction.ipynb` to train the model and view results.
 
 
 
 ---
-
-```
-
-```
